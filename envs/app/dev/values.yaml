@@ -3,4 +3,4 @@ autoscaling:
   maxReplicas: 5
 
 image:
-  tag: main-d85aabe-20260629
+  tag: main-1a5666f-20260628
