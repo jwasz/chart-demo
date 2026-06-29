@@ -5,9 +5,9 @@ metadata:
   namespace: argocd
 spec:
   description: Project for the app service
-  clusterResourceBlacklist:
-    - group: "*"
-      kind: "*"
+  clusterResourceWhitelist:
+    - group: ""
+      kind: "Namespace"
   namespaceResourceWhitelist:
     - group: "*"
       kind: "*"

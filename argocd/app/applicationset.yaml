@@ -18,12 +18,19 @@ spec:
     spec:
       destination:
         namespace: app-{{path.basename}}
-        name: demo
+        name: in-cluster
       project: app
       source:
-        path: charts/guestbook
+        path: charts/app
         repoURL: https://github.com/jwasz/chart-demo.git
         helm:
           valueFiles:
             - "/envs/app/{{path.basename}}/values.yaml"
-#            - "/envs/app/{{path.basename}}/feature-flags.yaml"
+      #            - "/envs/app/{{path.basename}}/feature-flags.yaml"
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+        automated:
+          enabled: true
+          prune: true
+          selfHeal: true

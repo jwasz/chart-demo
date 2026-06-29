@@ -2,11 +2,11 @@ apiVersion: kargo.akuity.io/v1alpha1
 kind: Warehouse
 metadata:
   name: app
-  namespace: kargo
+  namespace: app
 spec:
   subscriptions:
     - image:
-        repoURL: ghcr.io/jwasz/demo-app
+        repoURL: ghcr.io/jwasz/app-demo
         imageSelectionStrategy: Lexical
         allowTagsRegexes:
           - ^main-[a-f0-9]+-\d{8}$

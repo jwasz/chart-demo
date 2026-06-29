@@ -1,8 +1,8 @@
 apiVersion: kargo.akuity.io/v1alpha1
 kind: PromotionTask
 metadata:
-  name: app
-  namespace: kargo
+  name: promote
+  namespace: app
 spec:
   vars:
     - name: image
