@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: app
+  namespace: argocd
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/jwasz/chart-demo.git
+        revision: HEAD
+        directories:
+          - path: envs/app/*
+  template:
+    metadata:
+      name: app-{{path.basename}}
+      annotations:
+        kargo.akuity.io/authorized-stage: app:{{path.basename}}
+    spec:
+      destination:
+        namespace: app-{{path.basename}}
+        name: demo
+      project: app
+      source:
+        path: charts/guestbook
+        repoURL: https://github.com/jwasz/chart-demo.git
+        helm:
+          valueFiles:
+            - "/envs/app/{{path.basename}}/values.yaml"
+#            - "/envs/app/{{path.basename}}/feature-flags.yaml"
