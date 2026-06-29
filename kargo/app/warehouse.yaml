@@ -1,0 +1,12 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Warehouse
+metadata:
+  name: app
+  namespace: kargo
+spec:
+  subscriptions:
+    - image:
+        repoURL: ghcr.io/jwasz/demo-app
+        imageSelectionStrategy: Lexical
+        allowTagsRegexes:
+          - ^main-[a-f0-9]+-\d{8}$

@@ -1,0 +1,42 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: PromotionTask
+metadata:
+  name: app
+  namespace: kargo
+spec:
+  vars:
+    - name: image
+      value: ghcr.io/jwasz/app-demo
+    - name: repoURL
+      value: https://github.com/jwasz/chart-demo.git
+    - name: branch
+      value: main
+  steps:
+    - uses: git-clone
+      config:
+        repoURL: ${{ vars.repoURL }}
+        checkout:
+          - branch: ${{ vars.branch }}
+            path: ./out
+    - if: ${{ ctx.targetFreight.origin.name == "app" }}
+      uses: yaml-update
+      as: update-image
+      config:
+        path: ./out/envs/app/${{ ctx.stage }}/values.yaml
+        updates:
+          - key: image.tag
+            value: ${{ imageFrom( vars.image ).Tag }}
+    - uses: git-commit
+      as: commit
+      config:
+        path: ./out
+        message: "${{
+        'updated '+ctx.stage+' app to '+imageFrom( vars.image ).Tag
+        }}"
+    - uses: git-push
+      config:
+        path: ./out
+    - uses: argocd-update
+      config:
+        apps:
+          - name: app-${{ ctx.stage }}
